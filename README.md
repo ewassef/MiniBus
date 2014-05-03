@@ -1,0 +1,4 @@
+MiniBus
+=======
+
+A bus wrapper
