@@ -1,0 +1,66 @@
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\install_msmq.bat
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.exe.config
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.exe
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\log4net.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Magnum.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.StructureMapIntegration.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.Transports.Msmq.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\StructureMap.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Stact.dll
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.StructureMapIntegration.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\MassTransit.Transports.Msmq.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Magnum.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\log4net.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\StructureMap.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\StructureMap.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Stact.pdb
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\bin\Debug\Stact.xml
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.csprojResolveAssemblyReference.cache
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.EndpointInfo.resources
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.MainForm.resources
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.Properties.Resources.resources
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.csproj.GenerateResource.Cache
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.exe
+C:\Users\ewassef\Documents\MassTransit\src\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\libzmq.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.exe.config
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.exe
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.SystemView.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\Magnum.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.Transports.ZeroMQ.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.ServiceBusHost.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.ZeroMqHost.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\log4net.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\clrzmq.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.dll
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.Transports.ZeroMQ.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.ZeroMqHost.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\ShortBus.ServiceBusHost.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\Magnum.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\log4net.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\clrzmq.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\clrzmq.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.pdb
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\bin\Debug\MassTransit.Log4NetIntegration.xml
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.csprojResolveAssemblyReference.cache
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.EndpointInfo.resources
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.MainForm.resources
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.Properties.Resources.resources
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.csproj.GenerateResource.Cache
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.exe
+C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\MassTransit.SystemView\obj\Debug\MassTransit.SystemView.pdb
