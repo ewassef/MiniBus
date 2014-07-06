@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Language;
-using ShortBus.Hostable.Shared.Interface;
 using ShortBus.ServiceBusHost;
 
 namespace PointB
 {
     class ThisIsSteve :
-        MakeRequests,
-        INeedProcessed<FromSteve,AlanNotification>,
-        IHandleMessage<FromAlan, SteveNotification>,
-        IListen<AlanNotification>,
-        IFireAndForgetRequest<SteveNotification>
+        BusAwareClass
     {
+        public ThisIsSteve(ServiceBusHost host) : base(host)
+        {
+            Host.Subscribe<AlanNotification>(ListenFor,false);
+            Host.Subscribe<FromAlan,SteveNotification>(ProcessMessage,false);
+            Publish(ref FireAndForgetRequest);
+            Register(ref RequestAndWaitResponse);
+        }
+
         public SteveNotification ProcessMessage(FromAlan input)
         {
             Console.WriteLine("RECEIVED [Response]- > {0}", input.Message);
@@ -27,13 +26,13 @@ namespace PointB
                 };
         }
 
-        public Func<FromSteve,AlanNotification> RequestAndWaitResponse { get; set; }
+        public Func<FromSteve, AlanNotification> RequestAndWaitResponse;
         
         public void ListenFor(AlanNotification input)
         {
             Console.WriteLine("RECEIVED [ListenFor]- > {0}", input.Message);
         }
 
-        public Action<SteveNotification> FireAndForgetRequest { get; set; }
+        public Action<SteveNotification> FireAndForgetRequest;
     }
 }

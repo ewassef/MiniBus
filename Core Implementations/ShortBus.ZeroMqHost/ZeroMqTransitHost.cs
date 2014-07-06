@@ -1,32 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Diagnostics.Introspection;
 using MassTransit.Distributor;
 using MassTransit.Distributor.DistributorConfigurators;
 using MassTransit.Distributor.WorkerConfigurators;
-using MassTransit.Events;
 using MassTransit.Log4NetIntegration;
 using MassTransit.Monitoring;
 using MassTransit.Saga;
 using MassTransit.Services.HealthMonitoring;
 using MassTransit.Services.HealthMonitoring.Messages;
 using MassTransit.Services.HealthMonitoring.Server;
-using MassTransit.Services.Subscriptions.Messages;
 using MassTransit.SubscriptionConfigurators;
 using MassTransit.Transports.ZeroMQ;
-using ShortBus.Hostable.Shared.Interface;
 using ShortBus.Hostable.Shared.Specialized;
 using ShortBus.ServiceBusHost;
 using log4net;
-using ILog = MassTransit.Logging.ILog;
 
 namespace ShortBus.ZeroMqHost
 {

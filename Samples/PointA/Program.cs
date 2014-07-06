@@ -21,7 +21,7 @@ namespace PointA
             
             var bus = ServiceBusHost.Create(configuration =>
                 {
-                    configuration.HostBusAwareClass<ThisIsAlan>(inst=>alan=inst);
+                    configuration.Host<ThisIsAlan>(inst=>alan=inst);
                     configuration.SubscriptionServiceHost(Environment.MachineName);
                     configuration.UseZeroMq();
                 });
@@ -46,6 +46,13 @@ namespace PointA
                 {
                     Message = string.Format("{0} > {1}", Process.GetCurrentProcess().Id.ToString(), counter++),
                 });
+                Console.WriteLine("Sending ...");
+                var res = alan.RequestAndWaitResponse(new FromAlan
+                {
+                    CorrelationId = Guid.NewGuid(),
+                    Message = string.Format("{0} > {1}", Process.GetCurrentProcess().Id.ToString(), counter++),
+                });
+                Console.WriteLine(res != null ? res.Message : "No response"); 
             //    Console.WriteLine("Sending ...");
             //    alan.FireAndForgetRequest(new AlanNotification
             //    {
@@ -58,13 +65,7 @@ namespace PointA
             //    });
                 
             }
-                //Console.WriteLine("Sending ...");
-            //    var res = alan.RequestAndWaitResponse(new FromAlan
-            //    {
-            //        CorrelationId = Guid.NewGuid(),
-            //        Message = string.Format("{0} > {1}", Process.GetCurrentProcess().Id.ToString(), counter++),
-            //    });
-            //    Console.WriteLine(res != null ? res.Message : "No response"); 
+               
         }
     }
 }

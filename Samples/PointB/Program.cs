@@ -17,10 +17,10 @@ namespace PointB
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
-            steve = new ThisIsSteve();
+            
             var bus = ServiceBusHost.Create(configuration =>
             {
-                configuration.Host(steve);
+                configuration.Host<ThisIsSteve>(instance=> steve=instance);
                 configuration.SubscriptionServiceHost(Environment.MachineName);
                 configuration.UseZeroMq();
             });
@@ -43,6 +43,13 @@ namespace PointB
                     Message = Process.GetCurrentProcess().Id.ToString(),
                     
                 });
+            Console.WriteLine("Sending ...");
+            var res = steve.RequestAndWaitResponse(new FromSteve()
+                {
+                    CorrelationId = Guid.NewGuid(),
+                    Response = Process.GetCurrentProcess().Id.ToString()
+                });
+            Console.WriteLine(res != null ? res.Message : "No response");
             //Console.WriteLine("Sending ...");
             //steve.FireAndForgetRequest(new SteveNotification
             //{

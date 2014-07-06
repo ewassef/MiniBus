@@ -61,4 +61,3 @@ C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\clrzmq.pdb
 C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\clrzmq.xml
 C:\Users\Eddie\Documents\MiniBus\Samples\PointB\obj\Debug\PointB.exe
 C:\Users\Eddie\Documents\MiniBus\Samples\PointB\obj\Debug\PointB.pdb
-C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\libzmq.dll

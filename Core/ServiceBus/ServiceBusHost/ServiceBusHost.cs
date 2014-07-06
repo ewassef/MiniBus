@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using ShortBus.Hostable.Shared.Interface;
 
 namespace ShortBus.ServiceBusHost
 {
@@ -135,13 +132,15 @@ namespace ShortBus.ServiceBusHost
             if (conf.Settings.HostCreator != null)
             {
                 var host = conf.Settings.HostCreator.Invoke();
-                conf.Settings.PublishActions.ForEach(x => x.Invoke(host));
-                conf.Settings.RequestFuncs.ForEach(x => x.Invoke(host));
-                conf.Settings.SubscriptionActions.ForEach(x => x.Invoke(host));
-                conf.Settings.SubscriptionFuncs.ForEach(x => x.Invoke(host));
-                host.Register(conf.Settings);
+                //conf.Settings.PublishActions.ForEach(x => x.Invoke(host));
+                //conf.Settings.RequestFuncs.ForEach(x => x.Invoke(host));
+                //conf.Settings.SubscriptionActions.ForEach(x => x.Invoke(host));
+                //conf.Settings.SubscriptionFuncs.ForEach(x => x.Invoke(host));
+                
                 if (conf.Settings.InstanceFunc != null)
                     conf.Settings.InstanceFunc(host);
+                
+                host.Register(conf.Settings);
                 return host;
             }
             throw new ConfigurationErrorsException("Configuration issue: Set the type of bus to use");
@@ -157,48 +156,48 @@ namespace ShortBus.ServiceBusHost
     {
         public readonly HostSettings Settings = new HostSettings();
 
-        public void Host(object instance)
-        {
-            Settings.Instance = instance;
-            //Go through the instance using reflection and register the calls
-            var interfaces = instance.GetType().GetInterfaces();
-            var methods = GetType().GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
-            //IFireAndForgetRequest -> Register<T>
-            var method = methods.First(x => x.ToString().Contains("Register[TIn]"));
-            foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IFireAndForgetRequest<>)))
-            {
-                var arg = face.GetGenericArguments();
-                var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { false });
-            }
-            //IRequestResponse -> Register<T1,T2>
-            method = methods.First(x => x.ToString().Contains("Register[TIn,TOut]"));
-            foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(INeedProcessed<,>)))
-            {
-                var arg = face.GetGenericArguments();
-                var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { false });
-            }
-            //IListen -> Subscribe<T>
-            method = methods.First(x => x.ToString().Contains("Subscribe[TIn]"));
-            foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IListen<>)))
-            {
-                var arg = face.GetGenericArguments();
-                var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { false });
-            }
-            //ICommand -> Subscribe<T1,T2>
-            method = methods.First(x => x.ToString().Contains("Subscribe[TIn,TOut]"));
-            foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IHandleMessage<,>)))
-            {
-                var arg = face.GetGenericArguments();
-                var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { false });
-            }
+        //public void Host(object instance)
+        //{
+        //    Settings.Instance = instance;
+        //    //Go through the instance using reflection and register the calls
+        //    var interfaces = instance.GetType().GetInterfaces();
+        //    var methods = GetType().GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+        //    //IFireAndForgetRequest -> Register<T>
+        //    var method = methods.First(x => x.ToString().Contains("Register[TIn]"));
+        //    foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IFireAndForgetRequest<>)))
+        //    {
+        //        var arg = face.GetGenericArguments();
+        //        var generic = method.MakeGenericMethod(arg);
+        //        generic.Invoke(this, new object[] { false });
+        //    }
+        //    //IRequestResponse -> Register<T1,T2>
+        //    method = methods.First(x => x.ToString().Contains("Register[TIn,TOut]"));
+        //    foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(INeedProcessed<,>)))
+        //    {
+        //        var arg = face.GetGenericArguments();
+        //        var generic = method.MakeGenericMethod(arg);
+        //        generic.Invoke(this, new object[] { false });
+        //    }
+        //    //IListen -> Subscribe<T>
+        //    method = methods.First(x => x.ToString().Contains("Subscribe[TIn]"));
+        //    foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IListen<>)))
+        //    {
+        //        var arg = face.GetGenericArguments();
+        //        var generic = method.MakeGenericMethod(arg);
+        //        generic.Invoke(this, new object[] { false });
+        //    }
+        //    //ICommand -> Subscribe<T1,T2>
+        //    method = methods.First(x => x.ToString().Contains("Subscribe[TIn,TOut]"));
+        //    foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IHandleMessage<,>)))
+        //    {
+        //        var arg = face.GetGenericArguments();
+        //        var generic = method.MakeGenericMethod(arg);
+        //        generic.Invoke(this, new object[] { false });
+        //    }
 
-        }
+        //}
 
-        public void HostBusAwareClass<TIn>(Action<TIn> callback) where TIn : BusAwareClass
+        public void Host<TIn>(Action<TIn> callback) where TIn : BusAwareClass
         {
             Settings.InstanceFunc = (bus) =>
                 {
@@ -222,54 +221,54 @@ namespace ShortBus.ServiceBusHost
             Settings.SubscriberOnMachine = machineName;
         }
 
-        protected void Register<TIn>(bool useDistributed = true) where TIn : class
-        {
-            Settings.PublishActions.Add(host =>
-            {
-                var cast = Settings.Instance as IFireAndForgetRequest<TIn>;
-                if (cast == null)
-                    throw new NotSupportedException(string.Format("This class must implement IFireAndForgetRequest<{0}> to call this method in this way", typeof(TIn).Name));
-                cast.FireAndForgetRequest = host.OnPublish(cast.FireAndForgetRequest, useDistributed);
+        //protected void Register<TIn>(bool useDistributed = true) where TIn : class
+        //{
+        //    Settings.PublishActions.Add(host =>
+        //    {
+        //        var cast = Settings.Instance as IFireAndForgetRequest<TIn>;
+        //        if (cast == null)
+        //            throw new NotSupportedException(string.Format("This class must implement IFireAndForgetRequest<{0}> to call this method in this way", typeof(TIn).Name));
+        //        cast.FireAndForgetRequest = host.OnPublish(cast.FireAndForgetRequest, useDistributed);
 
-            });
-        }
+        //    });
+        //}
 
-        protected void Register<TIn, TOut>(bool useDistributed = true)
-            where TOut : class, new()
-            where TIn : class
-        {
-            Settings.RequestFuncs.Add(host =>
-            {
-                var cast = Settings.Instance as INeedProcessed<TIn, TOut>;
-                if (cast == null)
-                    throw new NotSupportedException(string.Format("This class must implement IRequestResponse<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
-                cast.RequestAndWaitResponse = host.OnRequesting(cast.RequestAndWaitResponse, useDistributed);
-            });
-        }
+        //protected void Register<TIn, TOut>(bool useDistributed = true)
+        //    where TOut : class, new()
+        //    where TIn : class
+        //{
+        //    Settings.RequestFuncs.Add(host =>
+        //    {
+        //        var cast = Settings.Instance as INeedProcessed<TIn, TOut>;
+        //        if (cast == null)
+        //            throw new NotSupportedException(string.Format("This class must implement IRequestResponse<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
+        //        cast.RequestAndWaitResponse = host.OnRequesting(cast.RequestAndWaitResponse, useDistributed);
+        //    });
+        //}
 
-        protected void Subscribe<TIn>(bool canBeDistributed = true) where TIn : class
-        {
-            Settings.SubscriptionActions.Add(host =>
-            {
-                var cast = Settings.Instance as IListen<TIn>;
-                if (cast == null)
-                    throw new NotSupportedException(string.Format("This class must implement IListen<{0}> to call this method in this way", typeof(TIn).Name));
-                host.Subscribe<TIn>(cast.ListenFor, canBeDistributed);
-            });
-        }
+        //protected void Subscribe<TIn>(bool canBeDistributed = true) where TIn : class
+        //{
+        //    Settings.SubscriptionActions.Add(host =>
+        //    {
+        //        var cast = Settings.Instance as IListen<TIn>;
+        //        if (cast == null)
+        //            throw new NotSupportedException(string.Format("This class must implement IListen<{0}> to call this method in this way", typeof(TIn).Name));
+        //        host.Subscribe<TIn>(cast.ListenFor, canBeDistributed);
+        //    });
+        //}
 
-        protected void Subscribe<TIn, TOut>(bool canBeDistributed = true)
-            where TOut : class, new()
-            where TIn : class
-        {
-            Settings.SubscriptionFuncs.Add(host =>
-            {
-                var cast = Settings.Instance as IHandleMessage<TIn, TOut>;
-                if (cast == null)
-                    throw new NotSupportedException(string.Format("This class must implement ICommand<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
-                host.Subscribe<TIn, TOut>(cast.ProcessMessage, canBeDistributed);
-            });
-        }
+        //protected void Subscribe<TIn, TOut>(bool canBeDistributed = true)
+        //    where TOut : class, new()
+        //    where TIn : class
+        //{
+        //    Settings.SubscriptionFuncs.Add(host =>
+        //    {
+        //        var cast = Settings.Instance as IHandleMessage<TIn, TOut>;
+        //        if (cast == null)
+        //            throw new NotSupportedException(string.Format("This class must implement ICommand<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
+        //        host.Subscribe<TIn, TOut>(cast.ProcessMessage, canBeDistributed);
+        //    });
+        //}
 
 
 
@@ -283,17 +282,6 @@ namespace ShortBus.ServiceBusHost
         public object Instance;
 
         public Func<ServiceBusHost> HostCreator;
-
-        private readonly List<Action<ServiceBusHost>> _published = new List<Action<ServiceBusHost>>();
-        private readonly List<Action<ServiceBusHost>> _requests = new List<Action<ServiceBusHost>>();
-        private readonly List<Action<ServiceBusHost>> _hostedActions = new List<Action<ServiceBusHost>>();
-        private readonly List<Action<ServiceBusHost>> _hostFuncs = new List<Action<ServiceBusHost>>();
-
-        public List<Action<ServiceBusHost>> PublishActions { get { return _published; } }
-        public List<Action<ServiceBusHost>> RequestFuncs { get { return _requests; } }
-        public List<Action<ServiceBusHost>> SubscriptionActions { get { return _hostedActions; } }
-        public List<Action<ServiceBusHost>> SubscriptionFuncs { get { return _hostFuncs; } }
-
         public Func<ServiceBusHost, BusAwareClass> InstanceFunc { get; set; }
 
     }

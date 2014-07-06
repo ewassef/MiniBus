@@ -29,7 +29,6 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementat
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.exe
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.pdb
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\libzmq.dll
-C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.csprojResolveAssemblyReference.cache
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\libzmq.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\SubscriptionHoster.exe.config
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\SubscriptionHoster.exe
@@ -58,5 +57,6 @@ C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subsc
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\MassTransit.Transports.ZeroMQ.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\clrzmq.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\bin\Debug\clrzmq.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.csprojResolveAssemblyReference.cache
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.exe
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\SubscriptionHoster\obj\Debug\SubscriptionHoster.pdb
