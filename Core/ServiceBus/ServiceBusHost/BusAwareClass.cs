@@ -16,5 +16,16 @@ namespace ShortBus.ServiceBusHost
         }
 
         public ServiceBusHost Host { get { return _host; } }
+
+
+        protected void Publish<TIn>(ref Action<TIn> actionToUse,bool partOfADistrubutedService = false) where TIn : class
+        {
+            actionToUse = Host.OnPublish(actionToUse, partOfADistrubutedService);
+        }
+
+        protected void Register<TIn,TOut>(ref Func<TIn,TOut> funcToUse, bool partOfADistrubutedService = false) where TIn : class where TOut : class, new()
+        {
+            funcToUse = Host.OnRequesting(funcToUse, partOfADistrubutedService);
+        }
     }
 }

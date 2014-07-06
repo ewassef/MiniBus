@@ -16,13 +16,14 @@ namespace PointA
 
         public ThisIsAlan(ServiceBusHost host):base(host)
         {
-            FireAndForgetRequest = Host.OnPublish(FireAndForgetRequest, false);
-            RequestAndWaitResponse = Host.OnRequesting(RequestAndWaitResponse, false);
+            Publish(ref FireAndForgetRequest);
+            Register(ref RequestAndWaitResponse);
+            
             Host.Subscribe<SteveNotification>(ListenFor, false);
             Host.Subscribe<FromSteve, AlanNotification>(ProcessMessage, false);
         }
 
-        public Func<FromAlan, SteveNotification> RequestAndWaitResponse { get; set; }
+        public Func<FromAlan, SteveNotification> RequestAndWaitResponse;
 
         public AlanNotification ProcessMessage(FromSteve input)
         {
@@ -39,6 +40,6 @@ namespace PointA
             Console.WriteLine("RECEIVED [ListenFor]- > {0}", input.Message);
         }
 
-        public Action<AlanNotification> FireAndForgetRequest { get; set; }
+        public Action<AlanNotification> FireAndForgetRequest;
     }
 }
