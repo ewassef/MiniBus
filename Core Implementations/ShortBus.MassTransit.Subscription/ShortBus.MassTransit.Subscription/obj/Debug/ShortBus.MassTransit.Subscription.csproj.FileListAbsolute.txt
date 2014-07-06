@@ -25,3 +25,30 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementat
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransit.Subscription.csprojResolveAssemblyReference.cache
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransitHelper.Subscription.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransitHelper.Subscription.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\libzmq.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\ShortBus.MassTransitHelper.Subscription.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\ShortBus.MassTransitHelper.Subscription.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\log4net.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\Magnum.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.Log4NetIntegration.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.Transports.ZeroMQ.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MongoDB.Bson.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MongoDB.Driver.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\clrzmq.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.Transports.ZeroMQ.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\log4net.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\Magnum.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.Log4NetIntegration.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MassTransit.Log4NetIntegration.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MongoDB.Bson.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\MongoDB.Driver.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\clrzmq.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\bin\Debug\clrzmq.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransit.Subscription.csprojResolveAssemblyReference.cache
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransitHelper.Subscription.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription\obj\Debug\ShortBus.MassTransitHelper.Subscription.pdb

@@ -18,10 +18,10 @@ namespace PointA
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
-            alan = new ThisIsAlan();
+            
             var bus = ServiceBusHost.Create(configuration =>
                 {
-                    configuration.Host(alan);
+                    configuration.HostBusAwareClass<ThisIsAlan>(inst=>alan=inst);
                     configuration.SubscriptionServiceHost(Environment.MachineName);
                     configuration.UseZeroMq();
                 });

@@ -7,13 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.ZeroMqHost", "..\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.Transports.ZeroMQ", "..\MassTransit.Transports.ZeroMQ\MassTransit.Transports.ZeroMQ.csproj", "{93575983-0B24-42FB-BD53-1BFCB1BD40A7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AB204881-1ED5-4DC2-BD55-2C10406B3D31}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.MassTransit.Subscription", "ShortBus.MassTransit.Subscription\ShortBus.MassTransit.Subscription.csproj", "{F29D4287-BEEE-438C-88A6-B9C85D583260}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{E5C85725-CD64-4441-82A7-A2424B7848D5}"
@@ -22,11 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Hostable.Shared", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.ServiceBusHost", "..\..\Core\ServiceBus\ServiceBusHost\ShortBus.ServiceBusHost.csproj", "{C3BD40FB-F7AB-421D-8D78-62128E0A40D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CA25131F-331B-4183-AC54-4B52FE3C3A81}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -63,5 +59,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4F2EA5A9-A63B-4265-A76F-4A69C6A19D1E} = {E5C85725-CD64-4441-82A7-A2424B7848D5}
 		{C3BD40FB-F7AB-421D-8D78-62128E0A40D6} = {E5C85725-CD64-4441-82A7-A2424B7848D5}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

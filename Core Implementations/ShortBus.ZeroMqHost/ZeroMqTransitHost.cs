@@ -55,43 +55,43 @@ namespace ShortBus.ZeroMqHost
         {
 
             _bus = ServiceBusFactory.New(x =>
+            {
+                var port = FindFreePort();
+                ZeroMqAddress.RegisterLocalPort(port);
+                x.ReceiveFrom(string.Format("tcp://{2}:{0}/{1}/", port, Process.GetCurrentProcess().ProcessName, Environment.MachineName));
+                Log.InfoFormat("Configured to recieve from port {0} on local machine", port);
+                x.SetPurgeOnStartup(true);
+                x.SetNetwork(settings.Network);
+                x.UseBsonSerializer();
+                x.SetShutdownTimeout(TimeSpan.FromSeconds(15));
+                x.UseZeroMq(configurator =>
                 {
-                    var port = FindFreePort();
-                    ZeroMqAddress.RegisterLocalPort(port);
-                    x.ReceiveFrom(string.Format("tcp://{2}:{0}/{1}/", port, Process.GetCurrentProcess().ProcessName, Environment.MachineName));
-                    Log.InfoFormat("Configured to recieve from port {0} on local machine", port);
-                    x.SetPurgeOnStartup(true);
-                    x.SetNetwork(settings.Network);
-                    x.UseBsonSerializer();
-                    x.SetShutdownTimeout(TimeSpan.FromSeconds(15));
-                    x.UseZeroMq(configurator =>
+                    if (!string.IsNullOrWhiteSpace(settings.SubscriberOnMachine))
                     {
-                        if (!string.IsNullOrWhiteSpace(settings.SubscriberOnMachine))
-                        {
-                            configurator.UseSubscriptionService(string.Format("tcp://{0}:50000/", settings.SubscriberOnMachine));
-                            Log.InfoFormat("Configured to subscribe to service at tcp://{0}:50000/", settings.SubscriberOnMachine);
-                        }
-                    });
-
-                    x.UseControlBus();
-                    x.UseLog4Net();
-                    x.EnableMessageTracing();
-                    x.EnableRemoteIntrospection();
-                    x.UseHealthMonitoring(30);
-
-                    foreach (var a in distributedActions)
-                    {
-                        x.Worker(a);
-                    }
-                    foreach (var a in nonDistributedActions)
-                    {
-                        x.Subscribe(a);
-                    }
-                    foreach (var s in distributerSettings)
-                    {
-                        x.Distributor(s);
+                        configurator.UseSubscriptionService(string.Format("tcp://{0}:50000/", settings.SubscriberOnMachine));
+                        Log.InfoFormat("Configured to subscribe to service at tcp://{0}:50000/", settings.SubscriberOnMachine);
                     }
                 });
+
+                x.UseControlBus();
+                x.UseLog4Net();
+                x.EnableMessageTracing();
+                x.EnableRemoteIntrospection();
+                x.UseHealthMonitoring(30);
+
+                foreach (var a in distributedActions)
+                {
+                    x.Worker(a);
+                }
+                foreach (var a in nonDistributedActions)
+                {
+                    x.Subscribe(a);
+                }
+                foreach (var s in distributerSettings)
+                {
+                    x.Distributor(s);
+                }
+            });
 
             var repo = new InMemorySagaRepository<HealthSaga>();
 
@@ -156,16 +156,16 @@ namespace ShortBus.ZeroMqHost
                     _bus.Dispose();
 
                 _counters.ToList().ForEach(x =>
+                {
+                    try
                     {
-                        try
-                        {
-                            x.Value.Dispose();
-                        }
-                        catch
-                        {
+                        x.Value.Dispose();
+                    }
+                    catch
+                    {
 
-                        }
-                    });
+                    }
+                });
 
             }
             catch (Exception)
@@ -214,8 +214,8 @@ namespace ShortBus.ZeroMqHost
             handlerComplete.WaitOne();
             if (result != null)
             {
-                result.CorrelationId = msg.CorrelationId;
-                Log.InfoFormat("Recieved a reponse for msg with correlation ID {0}", msg.CorrelationId);
+
+                Log.InfoFormat("Recieved a reponse for msg with correlation ID {0}", msg);
             }
             return result;
 
@@ -233,18 +233,17 @@ namespace ShortBus.ZeroMqHost
             if (canBeDistributed)
             {
                 Action<WorkerBusServiceConfigurator> x = (c) =>
+                {
+
+                    var handler = c.Handler<TIn>(msg =>
                     {
+                        var output = hostedClassesFunc.Invoke(msg);
 
-                        var handler = c.Handler<TIn>(msg =>
-                            {
-                                var output = hostedClassesFunc.Invoke(msg);
-                                if (output != null)
-                                    output.CorrelationId = msg.CorrelationId;
-                                var context = _bus.MessageContext<TIn>();
-                                context.Respond(output ?? new TOut() { CorrelationId = msg.CorrelationId });
-                            }).Transient();
+                        var context = _bus.MessageContext<TIn>();
+                        context.Respond(output ?? new TOut());
+                    }).Transient();
 
-                    };
+                };
 
                 distributedActions.Add(x);
             }
@@ -253,10 +252,9 @@ namespace ShortBus.ZeroMqHost
                 nonDistributedActions.Add(configurator => configurator.Handler<TIn>(msg =>
                 {
                     var output = hostedClassesFunc.Invoke(msg);
-                    if (output != null)
-                        output.CorrelationId = msg.CorrelationId;
+
                     var context = _bus.MessageContext<TIn>();
-                    context.Respond(output ?? new TOut() { CorrelationId = msg.CorrelationId });
+                    context.Respond(output ?? new TOut());
                 }).Transient());
             }
         }
@@ -287,31 +285,31 @@ namespace ShortBus.ZeroMqHost
             Log.DebugFormat("Broadcasting out a health and stats update...");
             _healthService.Consume(new HealthUpdateRequest());
             var perfUpdate = new PerformanceUpdate()
-                {
-                    UpdateTimeUtc = DateTime.UtcNow,
-                    Counters = new List<Entry>()
-                };
+            {
+                UpdateTimeUtc = DateTime.UtcNow,
+                Counters = new List<Entry>()
+            };
 
             var probe = new InMemoryDiagnosticsProbe();
             _bus.Inspect(probe);
 
             perfUpdate.Counters.AddRange(probe.Entries.Select(x => new Entry
-                {
-                    Context = x.Context,
-                    Key = x.Key,
-                    Value = x.Value
-                }));
+            {
+                Context = x.Context,
+                Key = x.Key,
+                Value = x.Value
+            }));
 
             foreach (var counter in _counters)
             {
                 try
                 {
                     perfUpdate.Counters.Add(new Entry
-                                {
-                                    Context = Environment.MachineName,
-                                    Key = counter.Key,
-                                    Value = counter.Value.NextSample().RawValue.ToString()
-                                });
+                    {
+                        Context = Environment.MachineName,
+                        Key = counter.Key,
+                        Value = counter.Value.NextSample().RawValue.ToString()
+                    });
                 }
                 catch (Exception ex)
                 {

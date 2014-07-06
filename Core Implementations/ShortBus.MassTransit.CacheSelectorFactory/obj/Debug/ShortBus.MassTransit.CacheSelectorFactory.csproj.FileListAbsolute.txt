@@ -17,3 +17,22 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementat
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.csprojResolveAssemblyReference.cache
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\ShortBus.MassTransit.CacheSelectorFactory.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\ShortBus.MassTransit.CacheSelectorFactory.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\log4net.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\Magnum.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.Log4NetIntegration.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\log4net.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\Magnum.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.Log4NetIntegration.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\MassTransit.Log4NetIntegration.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.csprojResolveAssemblyReference.cache
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.MassTransit.CacheSelectorFactory\obj\Debug\ShortBus.MassTransit.CacheSelectorFactory.pdb

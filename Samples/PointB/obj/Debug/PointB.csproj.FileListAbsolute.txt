@@ -30,3 +30,35 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\PointB\o
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\PointB\bin\Debug\Newtonsoft.Json.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\PointB\bin\Debug\Newtonsoft.Json.xml
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Samples\PointB\bin\Debug\libzmq.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\obj\Debug\PointB.csprojResolveAssemblyReference.cache
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\PointB.exe.config
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\PointB.exe
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\PointB.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Language.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\log4net.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.ServiceBusHost.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.ZeroMqHost.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.Transports.ZeroMQ.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.Log4NetIntegration.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Magnum.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\clrzmq.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.ZeroMqHost.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\ShortBus.ServiceBusHost.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Language.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\log4net.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.Transports.ZeroMQ.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.Log4NetIntegration.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\MassTransit.Log4NetIntegration.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Magnum.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\clrzmq.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\clrzmq.xml
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\obj\Debug\PointB.exe
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\obj\Debug\PointB.pdb
+C:\Users\Eddie\Documents\MiniBus\Samples\PointB\bin\Debug\libzmq.dll

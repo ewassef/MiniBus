@@ -2,3 +2,7 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\Interfaces\
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\Interfaces\ShortBus.Hostable.Shared\bin\Debug\ShortBus.Hostable.Shared.pdb
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\Interfaces\ShortBus.Hostable.Shared\obj\Debug\ShortBus.Hostable.Shared.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\Interfaces\ShortBus.Hostable.Shared\obj\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\Eddie\Documents\MiniBus\Core\Interfaces\ShortBus.Hostable.Shared\bin\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\Eddie\Documents\MiniBus\Core\Interfaces\ShortBus.Hostable.Shared\bin\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\Eddie\Documents\MiniBus\Core\Interfaces\ShortBus.Hostable.Shared\obj\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\Eddie\Documents\MiniBus\Core\Interfaces\ShortBus.Hostable.Shared\obj\Debug\ShortBus.Hostable.Shared.pdb

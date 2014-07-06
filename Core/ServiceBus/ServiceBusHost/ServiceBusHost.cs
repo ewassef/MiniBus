@@ -12,16 +12,7 @@ namespace ShortBus.ServiceBusHost
     /// </summary>
     public abstract class ServiceBusHost : IDisposable
     {
-        #region Properties
-
-        /// <summary>
-        /// Returns the number of commands in the registry
-        /// </summary>
-        public int RegistrySize
-        {
-            get { return 0; }
-        }
-        #endregion
+      
 
         #region Methods
 
@@ -32,7 +23,7 @@ namespace ShortBus.ServiceBusHost
         /// <typeparam name="TIn">The kind of message you would like to send</typeparam>
         /// <param name="callingMethod">The stub of the action signature you would like to recieve a reference for</param>
         /// <returns></returns>
-        internal Action<TIn> OnPublish<TIn>(Action<TIn> callingMethod, bool useDistributedWhenPossible) where TIn : class
+        public Action<TIn> OnPublish<TIn>(Action<TIn> callingMethod, bool useDistributedWhenPossible) where TIn : class
         {
             if (useDistributedWhenPossible)
                 RegisterDistributedFor<TIn>();
@@ -49,8 +40,9 @@ namespace ShortBus.ServiceBusHost
         /// <typeparam name="TOut">Your response message.<remarks>Implements <see cref="ICorrelatedMessage"/>ICorrelatedMessage</remarks> and must have a value</typeparam>
         /// <param name="callingMethod">The stub of the Func signature that you would like to recieve a reference for</param>
         /// <returns></returns>
-        internal Func<TIn, TOut> OnRequesting<TIn, TOut>(Func<TIn, TOut> callingMethod, bool useDistributedWhenPossible)
-            where TOut : class, ICorrelatedMessage, new() where TIn : class, ICorrelatedMessage
+        public Func<TIn, TOut> OnRequesting<TIn, TOut>(Func<TIn, TOut> callingMethod, bool useDistributedWhenPossible)
+            where TOut : class, new()
+            where TIn : class
         {
             if (useDistributedWhenPossible)
                 RegisterDistributedFor<TIn>();
@@ -64,7 +56,7 @@ namespace ShortBus.ServiceBusHost
         /// </summary>
         /// <typeparam name="TIn">The kind of message you would like to receive</typeparam>
         /// <param name="methodToCall">The action to invoke upon reciept of that message</param>
-        internal void Subscribe<TIn>(Action<TIn> methodToCall, bool canBeDistributed) where TIn : class
+        public void Subscribe<TIn>(Action<TIn> methodToCall, bool canBeDistributed) where TIn : class
         {
             RegisterSubscriber(methodToCall, canBeDistributed);
         }
@@ -75,8 +67,9 @@ namespace ShortBus.ServiceBusHost
         /// <typeparam name="TIn">The type of messages you can handle.<remarks>Implements <see cref="ICorrelatedMessage"/>ICorrelatedMessage</remarks> and must have a value</typeparam>
         /// <typeparam name="TOut">The return message for that Func.<remarks>Implements <see cref="ICorrelatedMessage"/>ICorrelatedMessage</remarks> and must match the request messages</typeparam>
         /// <param name="method">The func to invoke upon reciept of the message</param>
-        internal void Subscribe<TIn, TOut>(Func<TIn, TOut> method, bool canBeDistributed)
-            where TOut : class, ICorrelatedMessage, new() where TIn : class, ICorrelatedMessage
+        public void Subscribe<TIn, TOut>(Func<TIn, TOut> method, bool canBeDistributed)
+            where TOut : class, new()
+            where TIn : class
         {
             RegisterHandler(method, canBeDistributed);
         }
@@ -97,8 +90,8 @@ namespace ShortBus.ServiceBusHost
         /// <param name="msg">The request message</param>
         /// <returns></returns>
         protected abstract TOut RegisterRequstReponse<TIn, TOut>(TIn msg)
-            where TIn : class,ICorrelatedMessage
-            where TOut : class,ICorrelatedMessage,new();
+            where TIn : class
+            where TOut : class,new();
 
 
         /// <summary>
@@ -108,8 +101,8 @@ namespace ShortBus.ServiceBusHost
         /// <typeparam name="TOut">The message to be returned to the requester.<remarks>Implements <see cref="ICorrelatedMessage"/>ICorrelatedMessage</remarks> and must have a value</typeparam>
         /// <param name="hostedClassesFunc">The func to invoke to get the appropriate data</param>
         protected abstract void RegisterHandler<TIn, TOut>(Func<TIn, TOut> hostedClassesFunc, bool canBeDistributed)
-            where TIn : class,ICorrelatedMessage
-            where TOut : class,ICorrelatedMessage, new();
+            where TIn : class
+            where TOut : class, new();
 
 
         /// <summary>
@@ -147,6 +140,8 @@ namespace ShortBus.ServiceBusHost
                 conf.Settings.SubscriptionActions.ForEach(x => x.Invoke(host));
                 conf.Settings.SubscriptionFuncs.ForEach(x => x.Invoke(host));
                 host.Register(conf.Settings);
+                if (conf.Settings.InstanceFunc != null)
+                    conf.Settings.InstanceFunc(host);
                 return host;
             }
             throw new ConfigurationErrorsException("Configuration issue: Set the type of bus to use");
@@ -167,14 +162,14 @@ namespace ShortBus.ServiceBusHost
             Settings.Instance = instance;
             //Go through the instance using reflection and register the calls
             var interfaces = instance.GetType().GetInterfaces();
-            var methods = GetType().GetMethods(System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.DeclaredOnly);
+            var methods = GetType().GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
             //IFireAndForgetRequest -> Register<T>
             var method = methods.First(x => x.ToString().Contains("Register[TIn]"));
             foreach (var face in interfaces.Where(x => x.GetGenericTypeDefinition() == typeof(IFireAndForgetRequest<>)))
             {
                 var arg = face.GetGenericArguments();
                 var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { true });
+                generic.Invoke(this, new object[] { false });
             }
             //IRequestResponse -> Register<T1,T2>
             method = methods.First(x => x.ToString().Contains("Register[TIn,TOut]"));
@@ -182,7 +177,7 @@ namespace ShortBus.ServiceBusHost
             {
                 var arg = face.GetGenericArguments();
                 var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] {true});
+                generic.Invoke(this, new object[] { false });
             }
             //IListen -> Subscribe<T>
             method = methods.First(x => x.ToString().Contains("Subscribe[TIn]"));
@@ -190,7 +185,7 @@ namespace ShortBus.ServiceBusHost
             {
                 var arg = face.GetGenericArguments();
                 var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { true });
+                generic.Invoke(this, new object[] { false });
             }
             //ICommand -> Subscribe<T1,T2>
             method = methods.First(x => x.ToString().Contains("Subscribe[TIn,TOut]"));
@@ -198,9 +193,20 @@ namespace ShortBus.ServiceBusHost
             {
                 var arg = face.GetGenericArguments();
                 var generic = method.MakeGenericMethod(arg);
-                generic.Invoke(this, new object[] { true });
+                generic.Invoke(this, new object[] { false });
             }
 
+        }
+
+        public void HostBusAwareClass<TIn>(Action<TIn> callback) where TIn : BusAwareClass
+        {
+            Settings.InstanceFunc = (bus) =>
+                {
+                    var instance = Activator.CreateInstance(typeof (TIn), bus) as TIn;
+                    Settings.Instance = instance;
+                    callback(instance);
+                    return instance;
+                };
         }
 
         public void PartOfServiceGroup(string serviceGroupName)
@@ -219,48 +225,50 @@ namespace ShortBus.ServiceBusHost
         protected void Register<TIn>(bool useDistributed = true) where TIn : class
         {
             Settings.PublishActions.Add(host =>
-                {
-                    var cast = Settings.Instance as IFireAndForgetRequest<TIn>;
-                    if (cast == null)
-                        throw new NotSupportedException(string.Format("This class must implement IFireAndForgetRequest<{0}> to call this method in this way", typeof(TIn).Name));
-                    cast.FireAndForgetRequest = host.OnPublish(cast.FireAndForgetRequest, useDistributed);
+            {
+                var cast = Settings.Instance as IFireAndForgetRequest<TIn>;
+                if (cast == null)
+                    throw new NotSupportedException(string.Format("This class must implement IFireAndForgetRequest<{0}> to call this method in this way", typeof(TIn).Name));
+                cast.FireAndForgetRequest = host.OnPublish(cast.FireAndForgetRequest, useDistributed);
 
-                });
+            });
         }
 
         protected void Register<TIn, TOut>(bool useDistributed = true)
-            where TOut : class, ICorrelatedMessage, new() where TIn : class, ICorrelatedMessage
+            where TOut : class, new()
+            where TIn : class
         {
             Settings.RequestFuncs.Add(host =>
-                {
-                    var cast = Settings.Instance as INeedProcessed<TIn, TOut>;
-                    if (cast == null)
-                        throw new NotSupportedException(string.Format("This class must implement IRequestResponse<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
-                    cast.RequestAndWaitResponse = host.OnRequesting(cast.RequestAndWaitResponse,useDistributed);
-                });
+            {
+                var cast = Settings.Instance as INeedProcessed<TIn, TOut>;
+                if (cast == null)
+                    throw new NotSupportedException(string.Format("This class must implement IRequestResponse<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
+                cast.RequestAndWaitResponse = host.OnRequesting(cast.RequestAndWaitResponse, useDistributed);
+            });
         }
 
         protected void Subscribe<TIn>(bool canBeDistributed = true) where TIn : class
         {
             Settings.SubscriptionActions.Add(host =>
-                {
-                    var cast = Settings.Instance as IListen<TIn>;
-                    if (cast == null)
-                        throw new NotSupportedException(string.Format("This class must implement IListen<{0}> to call this method in this way", typeof(TIn).Name));
-                    host.Subscribe<TIn>(cast.ListenFor,canBeDistributed);
-                });
+            {
+                var cast = Settings.Instance as IListen<TIn>;
+                if (cast == null)
+                    throw new NotSupportedException(string.Format("This class must implement IListen<{0}> to call this method in this way", typeof(TIn).Name));
+                host.Subscribe<TIn>(cast.ListenFor, canBeDistributed);
+            });
         }
 
         protected void Subscribe<TIn, TOut>(bool canBeDistributed = true)
-            where TOut : class, ICorrelatedMessage, new() where TIn : class, ICorrelatedMessage
+            where TOut : class, new()
+            where TIn : class
         {
             Settings.SubscriptionFuncs.Add(host =>
-                {
-                    var cast = Settings.Instance as IHandleMessage<TIn, TOut>;
-                    if (cast == null)
-                        throw new NotSupportedException(string.Format("This class must implement ICommand<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
-                    host.Subscribe<TIn, TOut>(cast.ProcessMessage,canBeDistributed);
-                });
+            {
+                var cast = Settings.Instance as IHandleMessage<TIn, TOut>;
+                if (cast == null)
+                    throw new NotSupportedException(string.Format("This class must implement ICommand<{0},{1}> to call this method in this way", typeof(TIn).Name, typeof(TOut).Name));
+                host.Subscribe<TIn, TOut>(cast.ProcessMessage, canBeDistributed);
+            });
         }
 
 
@@ -286,6 +294,7 @@ namespace ShortBus.ServiceBusHost
         public List<Action<ServiceBusHost>> SubscriptionActions { get { return _hostedActions; } }
         public List<Action<ServiceBusHost>> SubscriptionFuncs { get { return _hostFuncs; } }
 
+        public Func<ServiceBusHost, BusAwareClass> InstanceFunc { get; set; }
 
     }
 }

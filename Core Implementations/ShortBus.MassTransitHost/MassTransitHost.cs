@@ -39,21 +39,23 @@ namespace ShortBus.MassTransitHost
         /// </summary>
         protected override void Register(HostSettings settings)
         {
-            
+
             _bus = ServiceBusFactory.New(x =>
             {
 
-                x.ReceiveFrom(string.Format("msmq://localhost/{0}_{1}", settings.Network, settings.ClusterServiceName));
+                x.ReceiveFrom(string.Format("msmq://localhost/{0}_{1}", settings.Network,
+                                            settings.ClusterServiceName));
                 x.SetPurgeOnStartup(true);
                 x.SetNetwork(settings.Network);
                 x.UseMsmq(configurator =>
-                    {
-                        configurator.VerifyMsmqConfiguration();
-                        if (!string.IsNullOrWhiteSpace(settings.SubscriberOnMachine))
-                            configurator.UseSubscriptionService(string.Format("msmq://{0}/subscriptions", settings.SubscriberOnMachine));
-                        else
-                            configurator.UseMulticastSubscriptionClient();
-                    });
+                {
+                    configurator.VerifyMsmqConfiguration();
+                    if (!string.IsNullOrWhiteSpace(settings.SubscriberOnMachine))
+                        configurator.UseSubscriptionService(string.Format("msmq://{0}/subscriptions",
+                                                                          settings.SubscriberOnMachine));
+                    else
+                        configurator.UseMulticastSubscriptionClient();
+                });
                 x.UseControlBus();
                 x.UseLog4Net();
                 x.EnableMessageTracing();
@@ -70,6 +72,7 @@ namespace ShortBus.MassTransitHost
                     x.Distributor(s);
                 }
             });
+            Bus = _bus;
         }
 
         protected override void RegisterDistributedFor<T>()
@@ -77,29 +80,31 @@ namespace ShortBus.MassTransitHost
             //HACK: This is to fix a bug with MT 2.8
             //return;
             distributerSettings.Add((c) =>
+            {
+                if (typeof(T).GetCustomAttributes(true).Any(s => s is CachableItemAttribute))
                 {
-                    if (typeof(T).GetCustomAttributes(true).Any(s => s is CachableItemAttribute))
-                    {
-                        c.Handler<T>().UseWorkerSelector<EuclidSelectorFactory>();
-                    }
-                    else
-                    {
-                        c.Handler<T>().UseWorkerSelector<LeastBusyWorkerSelectorFactory>();
-                    }
-                });
+                    c.Handler<T>().UseWorkerSelector<EuclidSelectorFactory>();
+                }
+                else
+                {
+                    c.Handler<T>().UseWorkerSelector<LeastBusyWorkerSelectorFactory>();
+                }
+            });
         }
 
         public override void Cleanup()
         {
             _unsubscribeActions.ForEach(ua =>
-                {
-                    if (ua != null)
-                        ua.Invoke();
-                });
+            {
+                if (ua != null)
+                    ua.Invoke();
+            });
 
             _bus.Dispose();
             _bus = null;
         }
+
+        public override object Bus { get; protected set; }
 
         /// <summary>
         /// Abstract method to implement on the bus for allow for publish only calls
@@ -123,25 +128,22 @@ namespace ShortBus.MassTransitHost
             TOut result = null;
             var handlerComplete = new ManualResetEvent(false);
             _bus.PublishRequest(msg, resp =>
-                {
-                    resp.Handle<TOut>(respMsg =>
-                    {
-                        result = respMsg;
-                        handlerComplete.Set();
-                    });
-                    resp.HandleTimeout(TimeSpan.FromSeconds(10), () => handlerComplete.Set());
-                    resp.HandleFault(fault =>
-                        {
-                            //log or something
-                            Console.WriteLine(fault.FailedMessage);
-                            handlerComplete.Set();
-                        });
-                });
-            handlerComplete.WaitOne();
-            if (result != null)
             {
-                result.CorrelationId = msg.CorrelationId;
-            }
+                resp.Handle<TOut>(respMsg =>
+                {
+                    result = respMsg;
+                    handlerComplete.Set();
+                });
+                resp.HandleTimeout(TimeSpan.FromSeconds(10), () => handlerComplete.Set());
+                resp.HandleFault(fault =>
+                {
+                    //log or something
+                    Console.WriteLine(fault.FailedMessage);
+                    handlerComplete.Set();
+                });
+            });
+            handlerComplete.WaitOne();
+
             return result;
 
         }
@@ -159,23 +161,22 @@ namespace ShortBus.MassTransitHost
             if (canBeDistributed)
             {
                 Action<WorkerBusServiceConfigurator> x = (c) => c.Handler<TIn>(msg =>
-                    {
-                        var output = hostedClassesFunc.Invoke(msg);
-                        if (output != null) output.CorrelationId = msg.CorrelationId;
-                        var context = _bus.MessageContext<TIn>();
-                        context.Respond(output ?? new TOut(){CorrelationId = msg.CorrelationId});
-                    });
+                {
+                    var output = hostedClassesFunc.Invoke(msg);
+
+                    var context = _bus.MessageContext<TIn>();
+                    context.Respond(output ?? new TOut());
+                });
                 distributedActions.Add(x);
             }
             else
             {
                 nonDistributedActions.Add(configurator => configurator.Handler<TIn>(msg =>
-                    {
-                        var output = hostedClassesFunc.Invoke(msg);
-                        if (output != null) output.CorrelationId = msg.CorrelationId;
-                        var context = _bus.MessageContext<TIn>();
-                        context.Respond(output ?? new TOut() { CorrelationId = msg.CorrelationId });
-                    }));
+                {
+                    var output = hostedClassesFunc.Invoke(msg);
+                    var context = _bus.MessageContext<TIn>();
+                    context.Respond(output ?? new TOut());
+                }));
             }
         }
 

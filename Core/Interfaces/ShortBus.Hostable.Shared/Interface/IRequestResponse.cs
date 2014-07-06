@@ -9,8 +9,7 @@ namespace ShortBus.Hostable.Shared.Interface
     /// <typeparam name="TIn">Your request message with Correlation id</typeparam>
     /// <typeparam name="TOut">The listeners response with the same key</typeparam>
     public interface INeedProcessed<TIn, TOut>
-        where TIn : ICorrelatedMessage
-        where TOut : ICorrelatedMessage
+        
     {
         Func<TIn, TOut> RequestAndWaitResponse { get; set; }
     }

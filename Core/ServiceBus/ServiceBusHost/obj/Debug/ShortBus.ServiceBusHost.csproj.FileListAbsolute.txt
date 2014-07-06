@@ -5,3 +5,10 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\ServiceBus\
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.csprojResolveAssemblyReference.cache
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.pdb
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\bin\Debug\ShortBus.ServiceBusHost.dll
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\bin\Debug\ShortBus.ServiceBusHost.pdb
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\bin\Debug\ShortBus.Hostable.Shared.dll
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\bin\Debug\ShortBus.Hostable.Shared.pdb
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.csprojResolveAssemblyReference.cache
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.dll
+C:\Users\Eddie\Documents\MiniBus\Core\ServiceBus\ServiceBusHost\obj\Debug\ShortBus.ServiceBusHost.pdb

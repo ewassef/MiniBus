@@ -6,8 +6,7 @@
     /// </summary>
     /// <typeparam name="TIn">The input message type.</typeparam>
     /// <typeparam name="TOut">The return type expected. NOTE: make sure you correlated the ID with the request</typeparam>
-    public interface IHandleMessage<in TIn,out TOut>  where TIn : ICorrelatedMessage 
-                                                where TOut : ICorrelatedMessage
+    public interface IHandleMessage<in TIn, out TOut>
     {
         TOut ProcessMessage(TIn input);
     }

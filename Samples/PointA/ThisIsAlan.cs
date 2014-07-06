@@ -10,13 +10,18 @@ using ShortBus.Hostable.Shared.Interface;
 
 namespace PointA
 {
-    public class ThisIsAlan : 
-        MakeRequests,
-        INeedProcessed<FromAlan,SteveNotification>,
-        IHandleMessage<FromSteve,AlanNotification>,
-        IListen<SteveNotification>,
-        IFireAndForgetRequest<AlanNotification>
+    public class ThisIsAlan :
+        BusAwareClass
     {
+
+        public ThisIsAlan(ServiceBusHost host):base(host)
+        {
+            FireAndForgetRequest = Host.OnPublish(FireAndForgetRequest, false);
+            RequestAndWaitResponse = Host.OnRequesting(RequestAndWaitResponse, false);
+            Host.Subscribe<SteveNotification>(ListenFor, false);
+            Host.Subscribe<FromSteve, AlanNotification>(ProcessMessage, false);
+        }
+
         public Func<FromAlan, SteveNotification> RequestAndWaitResponse { get; set; }
 
         public AlanNotification ProcessMessage(FromSteve input)
