@@ -24,8 +24,7 @@ namespace MassTransit.SystemView
 	{
 		public IServiceBus GetBus(IConfiguration configuration)
 		{
-		    
-			return ServiceBusFactory.New(sbc =>
+		    return ServiceBusFactory.New(sbc =>
 				{
                     ZeroMqAddress.RegisterLocalPort(60002);
                     ZeroMqAddress.RegisterLocalPort(60003);

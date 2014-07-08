@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using MassTransit;
 using MassTransit.Log4NetIntegration;
 using MassTransit.Logging;
@@ -16,6 +17,7 @@ namespace ShortBus.MassTransitHelper.Subscription
         private static readonly ISagaRepository<SubscriptionClientSaga> SubscriptionClientSagas;
         private static SubscriptionStorage _storage;
         private static ILog _log;
+        private static string server;
         public PersistentSubscriptionService(MassTransit.Logging.ILog log) :
             base(Bus, SubscriptionSagas, SubscriptionClientSagas)
         {
@@ -36,14 +38,13 @@ namespace ShortBus.MassTransitHelper.Subscription
 
         static PersistentSubscriptionService()
         {
+            server = ConfigurationManager.AppSettings["ServerName"];
             Bus = ServiceBusFactory.New(sbc =>
                 {
                     sbc.ReceiveFrom("tcp://Current:50000");
                     sbc.UseSubscriptionStorage(SubscriptionStorageFactory);
                     sbc.SetConcurrentConsumerLimit(1);
-                    //sbc.UseMsmq(configurator => configurator.VerifyMsmqConfiguration());
                     sbc.UseZeroMq();
-                    //sbc.UseBinarySerializer();
                     sbc.SetPurgeOnStartup(true);
                     sbc.UseLog4Net();
                 });
@@ -54,7 +55,7 @@ namespace ShortBus.MassTransitHelper.Subscription
 
         private static SubscriptionStorage SubscriptionStorageFactory()
         {
-            return _storage ?? (_storage = new MongoSubscriptionStorage());
+            return _storage ?? (_storage = new MongoSubscriptionStorage(server));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using MassTransit.Logging;
 using Topshelf;
@@ -10,7 +11,7 @@ namespace SubscriptionHoster
 {
     internal static class Program
     {
-        private static readonly ILog _log = Logger.Get("test");
+        private static readonly ILog _log = Logger.Get("SubscriptionHoster");
         [STAThread]
         static void Main()
         {
@@ -19,26 +20,44 @@ namespace SubscriptionHoster
             var sss = HostFactory.New(x =>
                 {
                     x.RunAsLocalService();
-                    
+
                     x.SetDescription("Volatile Subscription service for the handlers on the bus");
                     x.SetDisplayName("Volatile Subscription Service");
                     x.SetServiceName("VolatileSubscriptionService");
                     DisplayStateMachine();
-                    x.Service<InMemorySubscriptionService>(s =>
+                    var onDisk = true;
+                    var server = ConfigurationManager.AppSettings["ServerName"];
+                    if (
+                        bool.TryParse(ConfigurationManager.AppSettings["PersistSubscription"], out onDisk)
+                        && onDisk
+                        && !string.IsNullOrWhiteSpace(server))
                     {
-                        s.ConstructUsing(f => new InMemorySubscriptionService(_log));
-                        s.WhenStarted(f => f.Start());
-                        s.WhenStopped(f =>
+                        x.Service<PersistentSubscriptionService>(s =>
+                            {
+                                s.ConstructUsing(f => new PersistentSubscriptionService(_log));
+                                s.WhenStarted(f => f.Start()); 
+                                s.WhenStopped(f => f.Dispose());
+                            });
+                    }
+                    else
+                    {
                         {
-                            f.Stop();
-                            f.Dispose();
+                            x.Service<InMemorySubscriptionService>(s =>
+                        {
+                            s.ConstructUsing(f => new InMemorySubscriptionService(_log));
+                            s.WhenStarted(f => f.Start());
+                            s.WhenStopped(f =>
+                            {
+                                f.Stop();
+                                f.Dispose();
+                            });
                         });
-                    });
-                    
+                        }
+                    }
                 });
             sss.Run();
 
-      
+
         }
         static void DisplayStateMachine()
         {

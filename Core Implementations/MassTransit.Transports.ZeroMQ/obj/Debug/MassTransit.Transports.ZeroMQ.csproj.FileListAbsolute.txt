@@ -45,3 +45,4 @@ C:\Users\Eddie\Documents\MiniBus\Core Implementations\MassTransit.Transports.Zer
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\MassTransit.Transports.ZeroMQ\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\MassTransit.Transports.ZeroMQ\obj\Debug\MassTransit.Transports.ZeroMQ.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\MassTransit.Transports.ZeroMQ\obj\Debug\MassTransit.Transports.ZeroMQ.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\MassTransit.Transports.ZeroMQ\obj\Debug\MassTransit.Transports.ZeroMQ.csprojResolveAssemblyReference.cache

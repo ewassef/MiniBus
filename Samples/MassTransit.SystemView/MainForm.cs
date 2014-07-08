@@ -179,20 +179,13 @@ namespace MassTransit.SystemView
 
         void ConnectToSubscriptionService()
         {
-            //_subscriptionServiceEndpoint =
-            //    _bus.GetEndpoint(_configuration.SubscriptionServiceUri);
+            _subscriptionServiceEndpoint =
+                _bus.GetEndpoint(_configuration.SubscriptionServiceUri);
 
-            //_subscriptionServiceEndpoint.Send(new AddSubscriptionClient(_clientId, _bus.Endpoint.Address.Uri,
-            //    _bus.Endpoint.Address.Uri));
-            
-            
-        }
+            _subscriptionServiceEndpoint.Send(new AddSubscriptionClient(_clientId, _bus.Endpoint.Address.Uri,
+                _bus.Endpoint.Address.Uri));
 
-        void BootstrapServiceBus()
-        {
-            _bus = new SystemViewRegistry().GetBus(_configuration);
-            _unsubscribe = _bus.SubscribeHandler<PerformanceUpdate>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<SubscriptionRefresh>(Consume);
+            _unsubscribe = _bus.SubscribeHandler<SubscriptionRefresh>(Consume);
             _unsubscribe += _bus.SubscribeHandler<AddSubscription>(Consume);
             _unsubscribe += _bus.SubscribeHandler<RemoveSubscription>(Consume);
             _unsubscribe += _bus.SubscribeHandler<AddSubscriptionClient>(Consume);
@@ -207,7 +200,13 @@ namespace MassTransit.SystemView
             _unsubscribe += _bus.SubscribeHandler<EndpointIsOffline>(Consume);
             _unsubscribe += _bus.SubscribeHandler<IWorkerAvailable>(Consume);
             _unsubscribe += _bus.SubscribeHandler<PerformanceUpdate>(Consume);
-           // _unsubscribe += _bus.SubscribeInstance(this);
+        }
+
+        void BootstrapServiceBus()
+        {
+            _bus = new SystemViewRegistry().GetBus(_configuration);
+            
+            
         }
 
         private IConfiguration _configuration;

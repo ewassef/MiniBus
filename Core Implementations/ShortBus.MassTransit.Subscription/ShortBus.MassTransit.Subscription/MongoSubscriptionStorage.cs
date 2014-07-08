@@ -15,12 +15,12 @@ namespace ShortBus.MassTransitHelper.Subscription
         private MongoDatabase database;
         private MongoCollection collection;
 
-        public MongoSubscriptionStorage()
+        public MongoSubscriptionStorage(string serverName)
         {
             // Create server settings to pass connection string, timeout, etc.
             settings = new MongoServerSettings
             {
-                Server = new MongoServerAddress("devserver01")
+                Server = new MongoServerAddress(serverName)
             };
             // Create server object to communicate with our server
             server = new MongoServer(settings);
