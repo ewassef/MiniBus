@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace ShortBus.ServiceBusHost
 {
@@ -9,7 +11,7 @@ namespace ShortBus.ServiceBusHost
     /// </summary>
     public abstract class ServiceBusHost : IDisposable
     {
-      
+
 
         #region Methods
 
@@ -132,14 +134,10 @@ namespace ShortBus.ServiceBusHost
             if (conf.Settings.HostCreator != null)
             {
                 var host = conf.Settings.HostCreator.Invoke();
-                //conf.Settings.PublishActions.ForEach(x => x.Invoke(host));
-                //conf.Settings.RequestFuncs.ForEach(x => x.Invoke(host));
-                //conf.Settings.SubscriptionActions.ForEach(x => x.Invoke(host));
-                //conf.Settings.SubscriptionFuncs.ForEach(x => x.Invoke(host));
-                
-                if (conf.Settings.InstanceFunc != null)
-                    conf.Settings.InstanceFunc(host);
-                
+
+                if (conf.Settings.InstanceFuncs != null)
+                    conf.Settings.InstanceFuncs.ForEach(x => x(host));
+
                 host.Register(conf.Settings);
                 return host;
             }
@@ -199,13 +197,25 @@ namespace ShortBus.ServiceBusHost
 
         public void Host<TIn>(Action<TIn> callback) where TIn : BusAwareClass
         {
-            Settings.InstanceFunc = (bus) =>
+            Settings.InstanceFuncs.Add((bus) =>
                 {
-                    var instance = Activator.CreateInstance(typeof (TIn), bus) as TIn;
-                    Settings.Instance = instance;
+                    var instance = Activator.CreateInstance(typeof(TIn), bus) as TIn;
+                    //Settings.Instance = instance;
                     callback(instance);
                     return instance;
-                };
+                });
+        }
+
+        public void Host(Type type,Action<BusAwareClass> callback)
+        {
+
+            Settings.InstanceFuncs.Add((bus) =>
+                {
+                    var instance = Activator.CreateInstance(type, bus) as BusAwareClass;
+                    callback(instance);
+                    return instance;
+                });
+
         }
 
         public void PartOfServiceGroup(string serviceGroupName)
@@ -279,10 +289,11 @@ namespace ShortBus.ServiceBusHost
         public string Network;
         public string ClusterServiceName;
         public string SubscriberOnMachine;
-        public object Instance;
-
         public Func<ServiceBusHost> HostCreator;
-        public Func<ServiceBusHost, BusAwareClass> InstanceFunc { get; set; }
+
+        public List<Func<ServiceBusHost, BusAwareClass>> InstanceFuncs { get; set; }
+        //public object Instance;
+
 
     }
 }
