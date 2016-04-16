@@ -179,8 +179,9 @@ namespace MassTransit.SystemView
 
         void ConnectToSubscriptionService()
         {
+            var subscriptionUri = new Uri(String.Format("tcp://{0}:50000/", _configuration.SubscriptionServiceMachine));
             _subscriptionServiceEndpoint =
-                _bus.GetEndpoint(_configuration.SubscriptionServiceUri);
+                _bus.GetEndpoint(subscriptionUri);
 
             _subscriptionServiceEndpoint.Send(new AddSubscriptionClient(_clientId, _bus.Endpoint.Address.Uri,
                 _bus.Endpoint.Address.Uri));

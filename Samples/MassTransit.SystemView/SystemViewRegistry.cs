@@ -24,16 +24,24 @@ namespace MassTransit.SystemView
 	{
 		public IServiceBus GetBus(IConfiguration configuration)
 		{
+
+		    var bus = ServiceBusHost.Create(conf =>
+		    {
+                conf.SubscriptionServiceHost(configuration.SubscriptionServiceMachine);
+                conf.UseZeroMq();
+		    });
+
+		    return bus.Bus as IServiceBus;
 		    return ServiceBusFactory.New(sbc =>
 				{
                     ZeroMqAddress.RegisterLocalPort(60002);
                     ZeroMqAddress.RegisterLocalPort(60003);
-					sbc.ReceiveFrom(configuration.SystemViewDataUri);
+					//sbc.ReceiveFrom(configuration.SystemViewDataUri);
                     sbc.UseBsonSerializer();
                     sbc.SetNetwork(string.Empty);
 				    sbc.UseZeroMq(config =>
 				        {
-				            config.UseSubscriptionService(configuration.SubscriptionServiceUri);
+				            //config.UseSubscriptionService(configuration.SubscriptionServiceUri);
 				        });
                     
 					sbc.SetConcurrentConsumerLimit(1);

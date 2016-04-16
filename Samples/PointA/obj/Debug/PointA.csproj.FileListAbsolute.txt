@@ -44,7 +44,6 @@ C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\MassTransit.Transports
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\MassTransit.Log4NetIntegration.dll
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\Magnum.dll
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\clrzmq.dll
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\ShortBus.ZeroMqHost.pdb
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\ShortBus.Hostable.Shared.pdb
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\ShortBus.ServiceBusHost.pdb
@@ -57,8 +56,8 @@ C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\MassTransit.Log4NetInt
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\MassTransit.Log4NetIntegration.xml
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\Magnum.xml
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\clrzmq.pdb
-C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\clrzmq.xml
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\obj\Debug\PointA.exe
 C:\Users\Eddie\Documents\MiniBus\Samples\PointA\obj\Debug\PointA.pdb
-C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\libzmq.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\NetMQ.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\AsyncIO.dll
+C:\Users\Eddie\Documents\MiniBus\Samples\PointA\bin\Debug\NetMQ.xml

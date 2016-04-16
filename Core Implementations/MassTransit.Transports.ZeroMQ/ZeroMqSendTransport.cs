@@ -1,16 +1,18 @@
+using System.Net.Sockets;
+using System.Runtime.Remoting.Contexts;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using log4net;
+using NetMQ;
+using NetMQ.Sockets;
 
 namespace MassTransit.Transports.ZeroMQ
 {
     using System;
     using System.Collections.Concurrent;
     using System.IO;
-    using System.Threading.Tasks;
-    using ZMQ;
-    using Exception = ZMQ.Exception;
+    using System.Threading.Tasks; 
 
 
     public class ZeroMqSendTransport :
@@ -18,8 +20,8 @@ namespace MassTransit.Transports.ZeroMQ
     {
         static readonly ILog Log = LogManager.GetLogger(typeof(ZeroMqSendTransport));
 
-        readonly Context _zmqContext;
-        readonly Socket _zmqSocket;
+        readonly NetMQContext _zmqContext;
+        readonly DealerSocket _zmqSocket;
         private readonly Uri _address;
         bool _needsToConnect = true;
         readonly BlockingCollection<byte[]> _queue;
@@ -29,9 +31,9 @@ namespace MassTransit.Transports.ZeroMQ
         public ZeroMqSendTransport(Uri address)
         {
             _address = address;
-            _zmqContext = new Context(4);
-            _zmqSocket = _zmqContext.Socket(SocketType.DEALER);
-            _zmqSocket.SndBuf = 10 * 1024 * 1024;
+            _zmqContext = NetMQContext.Create();
+            _zmqSocket = _zmqContext.CreateDealerSocket();
+            _zmqSocket.Options.SendBuffer = 10 * 1024 * 1024;
             _queue = new BlockingCollection<byte[]>();
             _running = true;
             _sending = Task.Factory.StartNew(SendBytes);
@@ -69,14 +71,20 @@ namespace MassTransit.Transports.ZeroMQ
 
         public void Dispose()
         {
-            Log.InfoFormat("Shutting down the dealer socket");
+            
             _running = false;
             if (_sending != null)
                 _sending.Wait(TimeSpan.FromSeconds(10));
             if (_zmqSocket != null)
+            {
+                Log.InfoFormat("Shutting down the dealer socket");
                 _zmqSocket.Dispose();
+            }
             if (_zmqContext != null)
+            {
+                Log.InfoFormat("Shutting down the context");
                 _zmqContext.Dispose();
+            }
         }
 
         public IEndpointAddress Address
@@ -121,7 +129,7 @@ namespace MassTransit.Transports.ZeroMQ
                 {
                     using (var x = new Newtonsoft.Json.Bson.BsonReader(new BinaryReader(new MemoryStream(msg.Body))))
                     {
-                        var obj = JsonSerializer.Create().Deserialize(x);
+                        var obj = JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(x);
                         msgContents = JsonConvert.SerializeObject(obj, Formatting.Indented);
                     }
                 }

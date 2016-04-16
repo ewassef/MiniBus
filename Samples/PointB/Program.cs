@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace PointB
             var bus = ServiceBusHost.Create(configuration =>
             {
                 configuration.Host<ThisIsSteve>(instance=> steve=instance);
-                configuration.SubscriptionServiceHost(Environment.MachineName);
+                configuration.SubscriptionServiceHost(ConfigurationManager.AppSettings["SubscriptionServiceMachine"]);
                 configuration.UseZeroMq();
             });
             Console.WriteLine("{0}... click any key to start ...", Process.GetCurrentProcess().Id.ToString());

@@ -1,7 +1,10 @@
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using log4net;
+using NetMQ;
+using NetMQ.Sockets;
 
 namespace MassTransit.Transports.ZeroMQ
 {
@@ -9,15 +12,14 @@ namespace MassTransit.Transports.ZeroMQ
     using System.Collections.Concurrent;
     using System.IO;
     using System.Threading.Tasks;
-    using Context;
-    using ZMQ;
+    using Context; 
 
     public class ZeroMqReceiveTransport : IInboundTransport
     {
 
         static readonly ILog Log = LogManager.GetLogger(typeof(ZeroMqReceiveTransport));
-        readonly ZMQ.Context _zmqContext;
-        readonly ZMQ.Socket _zmqSocket;
+        readonly NetMQContext _zmqContext;
+        readonly RouterSocket _zmqSocket;
         readonly int _socket = 10000;
         private readonly Uri _address;
         BlockingCollection<byte[]> queue;
@@ -26,28 +28,36 @@ namespace MassTransit.Transports.ZeroMQ
         public void Dispose()
         {
             running = false;
-            _task.Wait(TimeSpan.FromSeconds(10));
-            _zmqSocket.Dispose();
-            _zmqContext.Dispose();
+            _task.Wait(TimeSpan.FromSeconds(1));
+            if (_zmqSocket != null)
+            {
+                Log.InfoFormat("Shutting down the router socket");
+                _zmqSocket.Dispose();
+            }
+            if (_zmqContext != null)
+            {
+                Log.InfoFormat("Shutting down the context");
+                _zmqContext.Dispose();
+            }
         }
 
         
         public ZeroMqReceiveTransport(Uri address)
         {
-            _zmqContext = new Context(4);
-            _zmqSocket = _zmqContext.Socket(SocketType.ROUTER);
+            _zmqContext = NetMQContext.Create();
+            _zmqSocket = _zmqContext.CreateRouterSocket();
             queue = new BlockingCollection<byte[]>();
             _address = address;
             _socket = address.Port;
             try
             {
                 _zmqSocket.Bind(string.Format("tcp://*:{0}", _socket));
-                _zmqSocket.RcvBuf = 10 * 1024 * 1024;
+                _zmqSocket.Options.ReceiveBuffer = 10 * 1024 * 1024;
                 running = true;
                 _task = Task.Factory.StartNew(Read);
                 Log.InfoFormat("Creating a new ROUTER Socket and bound to {0}. Starting to listen", _socket);
             }
-            catch (ZMQ.Exception e)
+            catch (Exception e)
             {
                 Log.Error(e.Message, e);
             }
@@ -70,8 +80,9 @@ namespace MassTransit.Transports.ZeroMQ
             {
                 try
                 {
-                    var bites = _zmqSocket.Recv(100); 
-                    if (bites != null && bites.Length > 17)
+                    byte[] bites;
+                    var success = _zmqSocket.TryReceiveFrameBytes(TimeSpan.FromMilliseconds(250),out bites);
+                    if (success && bites != null && bites.Length > 17)
                     {
                         queue.Add(bites);
                         Log.DebugFormat("Received a message {0} bytes", bites.Length);
@@ -87,50 +98,53 @@ namespace MassTransit.Transports.ZeroMQ
         public void Receive(Func<IReceiveContext, Action<IReceiveContext>> lookupSinkChain, TimeSpan timeout)
         {
             byte[] bites = null;
-            if (!queue.TryTake(out bites, timeout)) 
+            if (queue == null || !queue.TryTake(out bites, timeout)) 
                 return;
             try
             {
-                var msg = ZmqMessage.Deserialize(bites);
-                if (msg == null)
-                    return;
-                Log.DebugFormat("Message deserialized successfully");
-                IReceiveContext context = ReceiveContext.FromBodyStream(new MemoryStream(msg.Body));
-                context.SetMessageId(msg.OriginalMessageId);
-                context.SetContentType(msg.ContentType);
-                context.SetInputAddress(Address);
-
-                if (Log.IsDebugEnabled)
+                if (bites != null)
                 {
-                    try
+                    var msg = ZmqMessage.Deserialize(bites);
+                    if (msg == null)
+                        return;
+                    Log.DebugFormat("Message deserialized successfully");
+                    IReceiveContext context = ReceiveContext.FromBodyStream(new MemoryStream(msg.Body));
+                    context.SetMessageId(msg.OriginalMessageId);
+                    context.SetContentType(msg.ContentType);
+                    context.SetInputAddress(Address);
+
+                    if (Log.IsDebugEnabled)
                     {
-                        var stream = new MemoryStream(msg.Body);
-                        string msgContents;
-                        if (msg.ContentType.Contains("xml"))
-                            msgContents = XDocument.Load(stream).ToString();
-                        else
+                        try
                         {
-                            using (var x = new Newtonsoft.Json.Bson.BsonReader(new BinaryReader(new MemoryStream(msg.Body))))
+                            var stream = new MemoryStream(msg.Body);
+                            string msgContents;
+                            if (msg.ContentType.Contains("xml"))
+                                msgContents = XDocument.Load(stream).ToString();
+                            else
                             {
-                                var obj = JsonSerializer.Create().Deserialize(x);
-                                msgContents = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                                using (var x = new Newtonsoft.Json.Bson.BsonReader(new BinaryReader(new MemoryStream(msg.Body))))
+                                {
+                                    var obj = JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(x);
+                                    msgContents = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                                }
                             }
+                            Log.DebugFormat("Msg=>{0}{1}", Environment.NewLine, msgContents);
                         }
-                        Log.DebugFormat("Msg=>{0}{1}", Environment.NewLine, msgContents);
-                    }
-                    catch
-                    {
+                        catch
+                        {
                         
+                        }
                     }
-                }
 
-                Action<IReceiveContext> receive = lookupSinkChain(context);
-                if (receive == null)
-                {
-                    Log.InfoFormat("No recieve context found in the lookup chain. Msg came in as {0}", context.MessageType);
-                    return;
+                    Action<IReceiveContext> receive = lookupSinkChain(context);
+                    if (receive == null)
+                    {
+                        Log.InfoFormat("No recieve context found in the lookup chain. Msg came in as {0}", context.MessageType);
+                        return;
+                    }
+                    receive(context);
                 }
-                receive(context);
             }
             catch (System.Exception e)
             {

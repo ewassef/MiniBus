@@ -20,26 +20,17 @@ namespace MassTransit.SystemView
     public class Configuration :
         IConfiguration
     {
-        const string SubscriptionServiceUriKey = "SubscriptionServiceUri";
-        const string SystemViewControlUriKey = "SystemViewControlUri";
-        const string SystemViewDataUriKey = "SystemViewDataUri";
+        const string _SubscriptionServiceMachine = "SubscriptionServiceMachine";
+        
 
         static readonly ILog _log = Logger.Get(typeof (Configuration));
 
-        public Uri SubscriptionServiceUri
+        public string SubscriptionServiceMachine
         {
-            get { return GetUriApplicationSetting(SubscriptionServiceUriKey); }
+            get { return GetApplicationSetting(_SubscriptionServiceMachine); }
         }
 
-        public Uri SystemViewControlUri
-        {
-            get { return GetUriApplicationSetting(SystemViewControlUriKey); }
-        }
-
-        public Uri SystemViewDataUri
-        {
-            get { return GetUriApplicationSetting(SystemViewDataUriKey); }
-        }
+      
 
         static Uri GetUriApplicationSetting(string key)
         {

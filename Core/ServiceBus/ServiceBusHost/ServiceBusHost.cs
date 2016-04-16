@@ -291,9 +291,13 @@ namespace ShortBus.ServiceBusHost
         public string SubscriberOnMachine;
         public Func<ServiceBusHost> HostCreator;
 
-        public List<Func<ServiceBusHost, BusAwareClass>> InstanceFuncs { get; set; }
+        public List<Func<ServiceBusHost, BusAwareClass>> InstanceFuncs { get; private set; }
         //public object Instance;
 
+        public HostSettings()
+        {
+            InstanceFuncs = new List<Func<ServiceBusHost, BusAwareClass>>();
+        }
 
     }
 }

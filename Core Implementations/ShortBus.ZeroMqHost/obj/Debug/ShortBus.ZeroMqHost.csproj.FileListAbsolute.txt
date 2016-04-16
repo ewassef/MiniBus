@@ -25,7 +25,6 @@ C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementat
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.csprojResolveAssemblyReference.cache
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.dll
 C:\Users\ewassef\Documents\Visual Studio 2012\Projects\ShortBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.pdb
-C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\libzmq.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.ZeroMqHost.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.ZeroMqHost.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\log4net.dll
@@ -36,7 +35,6 @@ C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\De
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.Hostable.Shared.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.ServiceBusHost.dll
-C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\clrzmq.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.Hostable.Shared.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.ServiceBusHost.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\MassTransit.Transports.ZeroMQ.pdb
@@ -47,8 +45,10 @@ C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\De
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\MassTransit.Log4NetIntegration.pdb
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\MassTransit.Log4NetIntegration.xml
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\clrzmq.pdb
-C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\clrzmq.xml
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.csprojResolveAssemblyReference.cache
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.dll
 C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\obj\Debug\ShortBus.ZeroMqHost.pdb
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\ShortBus.ZeroMqHost.dll.config
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\NetMQ.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\AsyncIO.dll
+C:\Users\Eddie\Documents\MiniBus\Core Implementations\ShortBus.ZeroMqHost\bin\Debug\NetMQ.xml

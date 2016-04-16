@@ -16,9 +16,6 @@ namespace MassTransit.SystemView
 
 	public interface IConfiguration
 	{
-		Uri SystemViewControlUri { get; }
-		Uri SystemViewDataUri { get; }
-
-		Uri SubscriptionServiceUri { get; }
+        string SubscriptionServiceMachine { get; }
 	}
 }
