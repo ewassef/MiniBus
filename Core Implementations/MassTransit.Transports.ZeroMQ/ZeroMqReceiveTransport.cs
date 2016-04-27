@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using log4net;
@@ -20,6 +21,7 @@ namespace MassTransit.Transports.ZeroMQ
         static readonly ILog Log = LogManager.GetLogger(typeof(ZeroMqReceiveTransport));
         readonly NetMQContext _zmqContext;
         readonly RouterSocket _zmqSocket;
+        readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         readonly int _socket = 10000;
         private readonly Uri _address;
         BlockingCollection<byte[]> queue;
@@ -28,6 +30,7 @@ namespace MassTransit.Transports.ZeroMQ
         public void Dispose()
         {
             running = false;
+            _tokenSource.Cancel();
             _task.Wait(TimeSpan.FromSeconds(1));
             if (_zmqSocket != null)
             {
@@ -54,7 +57,7 @@ namespace MassTransit.Transports.ZeroMQ
                 _zmqSocket.Bind(string.Format("tcp://*:{0}", _socket));
                 _zmqSocket.Options.ReceiveBuffer = 10 * 1024 * 1024;
                 running = true;
-                _task = Task.Factory.StartNew(Read);
+                _task = Task.Factory.StartNew(Read, _tokenSource.Token);
                 Log.InfoFormat("Creating a new ROUTER Socket and bound to {0}. Starting to listen", _socket);
             }
             catch (Exception e)

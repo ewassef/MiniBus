@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using log4net;
@@ -19,7 +20,7 @@ namespace MassTransit.Transports.ZeroMQ
         IOutboundTransport
     {
         static readonly ILog Log = LogManager.GetLogger(typeof(ZeroMqSendTransport));
-
+        readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         readonly NetMQContext _zmqContext;
         readonly DealerSocket _zmqSocket;
         private readonly Uri _address;
@@ -36,7 +37,7 @@ namespace MassTransit.Transports.ZeroMQ
             _zmqSocket.Options.SendBuffer = 10 * 1024 * 1024;
             _queue = new BlockingCollection<byte[]>();
             _running = true;
-            _sending = Task.Factory.StartNew(SendBytes);
+            _sending = Task.Factory.StartNew(SendBytes, _tokenSource.Token);
             Log.Info(string.Format("Dealer socket created, still not connected"));
         }
 
@@ -53,11 +54,11 @@ namespace MassTransit.Transports.ZeroMQ
 
         void SendBytes()
         {
-            while (_running)
+            while (_running || !_tokenSource.IsCancellationRequested)
             {
                 try
                 {
-                    var bites = _queue.Take();
+                    var bites = _queue.Take(_tokenSource.Token);
                     _zmqSocket.Send(bites);
                     Log.DebugFormat("Messge SENT to {0}", Address);
                 }
@@ -71,19 +72,33 @@ namespace MassTransit.Transports.ZeroMQ
 
         public void Dispose()
         {
-            
+            _tokenSource.Cancel();
             _running = false;
             if (_sending != null)
                 _sending.Wait(TimeSpan.FromSeconds(10));
             if (_zmqSocket != null)
             {
                 Log.InfoFormat("Shutting down the dealer socket");
-                _zmqSocket.Dispose();
+                try
+                {
+                    _zmqSocket.Dispose();
+                }
+                catch (NetMQException exception)
+                {
+                    
+                }
             }
             if (_zmqContext != null)
             {
                 Log.InfoFormat("Shutting down the context");
-                _zmqContext.Dispose();
+                try
+                {
+                    _zmqContext.Dispose();
+                }
+                catch (NetMQException)
+                {
+
+                }
             }
         }
 
