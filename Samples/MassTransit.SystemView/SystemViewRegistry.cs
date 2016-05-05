@@ -22,7 +22,7 @@ namespace MassTransit.SystemView
 	public class SystemViewRegistry 
 
 	{
-		public IServiceBus GetBus(IConfiguration configuration)
+		public ServiceBusHost GetBus(IConfiguration configuration)
 		{
 
 		    var bus = ServiceBusHost.Create(conf =>
@@ -31,24 +31,8 @@ namespace MassTransit.SystemView
                 conf.UseZeroMq();
 		    });
 
-		    return bus.Bus as IServiceBus;
-		    return ServiceBusFactory.New(sbc =>
-				{
-                    ZeroMqAddress.RegisterLocalPort(60002);
-                    ZeroMqAddress.RegisterLocalPort(60003);
-					//sbc.ReceiveFrom(configuration.SystemViewDataUri);
-                    sbc.UseBsonSerializer();
-                    sbc.SetNetwork(string.Empty);
-				    sbc.UseZeroMq(config =>
-				        {
-				            //config.UseSubscriptionService(configuration.SubscriptionServiceUri);
-				        });
-                    
-					sbc.SetConcurrentConsumerLimit(1);
-                    sbc.UseControlBus();
-				});
-
-			
+		    return bus;
+		     
 		}
 
 	}

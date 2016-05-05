@@ -13,6 +13,7 @@
 
 using MassTransit.Services.HealthMonitoring;
 using ShortBus.Hostable.Shared.Specialized;
+using ShortBus.ServiceBusHost;
 
 namespace MassTransit.SystemView
 {
@@ -31,7 +32,7 @@ namespace MassTransit.SystemView
         Form
     {
         readonly Guid _clientId = NewId.NextGuid();
-        IServiceBus _bus;
+        ServiceBusHost _bus;
         IEndpoint _subscriptionServiceEndpoint;
         UnsubscribeAction _unsubscribe;
         private HealthClient _client;
@@ -115,11 +116,11 @@ namespace MassTransit.SystemView
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _subscriptionServiceEndpoint.Send(new RemoveSubscriptionClient(_clientId, _bus.Endpoint.Address.Uri,
-                _bus.Endpoint.Address.Uri));
+            
+            
 
             _unsubscribe();
-
+            _bus.Cleanup();
             _bus.Dispose();
             _bus = null;
 
@@ -174,33 +175,34 @@ namespace MassTransit.SystemView
             ConnectToSubscriptionService();
 
             _client = new HealthClient(30);
-            _client.Start(_bus);
+            _client.Start(_bus.Bus as IServiceBus);
         }
 
         void ConnectToSubscriptionService()
         {
+            var innerBus = _bus.Bus as IServiceBus;
             var subscriptionUri = new Uri(String.Format("tcp://{0}:50000/", _configuration.SubscriptionServiceMachine));
             _subscriptionServiceEndpoint =
-                _bus.GetEndpoint(subscriptionUri);
+                innerBus.GetEndpoint(subscriptionUri);
 
-            _subscriptionServiceEndpoint.Send(new AddSubscriptionClient(_clientId, _bus.Endpoint.Address.Uri,
-                _bus.Endpoint.Address.Uri));
+            _subscriptionServiceEndpoint.Send(new AddSubscriptionClient(_clientId, innerBus.Endpoint.Address.Uri,
+                innerBus.Endpoint.Address.Uri));
 
-            _unsubscribe = _bus.SubscribeHandler<SubscriptionRefresh>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<AddSubscription>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<RemoveSubscription>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<AddSubscriptionClient>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<RemoveSubscriptionClient>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<HealthUpdate>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<TimeoutScheduled>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<TimeoutRescheduled>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<TimeoutExpired>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<EndpointIsHealthy>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<EndpointIsDown>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<EndpointIsSuspect>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<EndpointIsOffline>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<IWorkerAvailable>(Consume);
-            _unsubscribe += _bus.SubscribeHandler<PerformanceUpdate>(Consume);
+            _unsubscribe = innerBus.SubscribeHandler<SubscriptionRefresh>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<AddSubscription>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<RemoveSubscription>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<AddSubscriptionClient>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<RemoveSubscriptionClient>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<HealthUpdate>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<TimeoutScheduled>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<TimeoutRescheduled>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<TimeoutExpired>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<EndpointIsHealthy>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<EndpointIsDown>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<EndpointIsSuspect>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<EndpointIsOffline>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<IWorkerAvailable>(Consume);
+            _unsubscribe += innerBus.SubscribeHandler<PerformanceUpdate>(Consume);
         }
 
         void BootstrapServiceBus()
