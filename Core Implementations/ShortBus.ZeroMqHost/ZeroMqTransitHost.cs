@@ -40,13 +40,14 @@ namespace ShortBus.ZeroMqHost
         protected new readonly AutoResetEvent heartbeat = new AutoResetEvent(false);
         protected Dictionary<string, PerformanceCounter> _counters;
         protected bool _shuttingDown;
+        protected HostSettings _Settings;
         /// <summary>
         /// Registers this instance with a particular bus. Every instance with the same name
         /// will end up on the same bus
         /// </summary>
         protected override void Register(HostSettings settings)
         {
-
+            _Settings = settings;
             _bus = ServiceBusFactory.New(x =>
             {
                 var port = FindFreePort();
@@ -65,7 +66,7 @@ namespace ShortBus.ZeroMqHost
                         Log.InfoFormat("Configured to subscribe to service at tcp://{0}:50000/", settings.SubscriberOnMachine);
                     }
                 });
-
+                x.SetDefaultRetryLimit(settings.NumberOfRetries);
                 x.UseControlBus();
                 x.UseLog4Net();
                 x.EnableMessageTracing();
@@ -197,7 +198,7 @@ namespace ShortBus.ZeroMqHost
                     result = respMsg;
                     handlerComplete.Set();
                 });
-                resp.HandleTimeout(TimeSpan.FromSeconds(10), () => handlerComplete.Set());
+                resp.HandleTimeout(_Settings.MessageWaitLifespan.GetValueOrDefault(TimeSpan.FromSeconds(10)), () => handlerComplete.Set());
                 resp.HandleFault(fault =>
                 {
                     Log.Error(fault.FailedMessage);

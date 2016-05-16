@@ -76,10 +76,6 @@
       <Project>{4f2ea5a9-a63b-4265-a76f-4a69c6a19d1e}</Project>
       <Name>ShortBus.Hostable.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShortBus.MassTransit.CacheSelectorFactory\ShortBus.MassTransit.CacheSelectorFactory.csproj">
-      <Project>{2DEFBEC2-D68A-43E1-9182-C3DF3D3610E9}</Project>
-      <Name>ShortBus.MassTransit.CacheSelectorFactory</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

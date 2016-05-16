@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShortBus.ServiceBusHost
 {
-    public abstract class BusAwareClass
+    public abstract class BusAwareClass : IDisposable
     {
-        private ServiceBusHost _host;
+        private readonly ServiceBusHost _host;
         
         protected BusAwareClass(ServiceBusHost host)
         {
@@ -26,6 +26,11 @@ namespace ShortBus.ServiceBusHost
         protected void Register<TIn,TOut>(ref Func<TIn,TOut> funcToUse, bool partOfADistrubutedService = false) where TIn : class where TOut : class, new()
         {
             funcToUse = Host.OnRequesting(funcToUse, partOfADistrubutedService);
+        }
+
+        public void Dispose()
+        {
+            _host.Dispose();
         }
     }
 }

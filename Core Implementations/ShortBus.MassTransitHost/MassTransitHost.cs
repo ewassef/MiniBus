@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using MassTransit;
 using MassTransit.Distributor;
@@ -8,8 +7,6 @@ using MassTransit.Distributor.DistributorConfigurators;
 using MassTransit.Distributor.WorkerConfigurators;
 using MassTransit.Log4NetIntegration;
 using MassTransit.SubscriptionConfigurators;
-using ShortBus.Hostable.Shared.Specialized;
-using ShortBus.MassTransit.CacheSelectorFactory;
 using ShortBus.ServiceBusHost;
 
 namespace ShortBus.MassTransitHost
@@ -23,9 +20,9 @@ namespace ShortBus.MassTransitHost
         private IServiceBus _bus;
         private readonly List<UnsubscribeAction> _unsubscribeActions = new List<UnsubscribeAction>();
 
-        private readonly List<Action<WorkerBusServiceConfigurator>> distributedActions = new List<Action<WorkerBusServiceConfigurator>>();
-        private readonly List<Action<SubscriptionBusServiceConfigurator>> nonDistributedActions = new List<Action<SubscriptionBusServiceConfigurator>>();
-        private readonly List<Action<DistributorBusServiceConfigurator>> distributerSettings = new List<Action<DistributorBusServiceConfigurator>>();
+        private readonly List<Action<WorkerBusServiceConfigurator>> _distributedActions = new List<Action<WorkerBusServiceConfigurator>>();
+        private readonly List<Action<SubscriptionBusServiceConfigurator>> _nonDistributedActions = new List<Action<SubscriptionBusServiceConfigurator>>();
+        private readonly List<Action<DistributorBusServiceConfigurator>> _distributerSettings = new List<Action<DistributorBusServiceConfigurator>>();
 
         /// <summary>
         /// Registers this instance with a particular bus. Every instance with the same name
@@ -53,15 +50,15 @@ namespace ShortBus.MassTransitHost
                 x.UseControlBus();
                 x.UseLog4Net();
                 x.EnableMessageTracing();
-                foreach (var a in distributedActions)
+                foreach (var a in _distributedActions)
                 {
                     x.Worker(a);
                 }
-                foreach (var a in nonDistributedActions)
+                foreach (var a in _nonDistributedActions)
                 {
                     x.Subscribe(a);
                 }
-                foreach (var s in distributerSettings)
+                foreach (var s in _distributerSettings)
                 {
                     x.Distributor(s);
                 }
@@ -73,13 +70,8 @@ namespace ShortBus.MassTransitHost
         {
             //HACK: This is to fix a bug with MT 2.8
             //return;
-            distributerSettings.Add((c) =>
+            _distributerSettings.Add((c) =>
             {
-                if (typeof(T).GetCustomAttributes(true).Any(s => s is CachableItemAttribute))
-                {
-                    c.Handler<T>().UseWorkerSelector<EuclidSelectorFactory>();
-                }
-                else
                 {
                     c.Handler<T>().UseWorkerSelector<LeastBusyWorkerSelectorFactory>();
                 }
@@ -161,11 +153,11 @@ namespace ShortBus.MassTransitHost
                     var context = _bus.MessageContext<TIn>();
                     context.Respond(output ?? new TOut());
                 });
-                distributedActions.Add(x);
+                _distributedActions.Add(x);
             }
             else
             {
-                nonDistributedActions.Add(configurator => configurator.Handler<TIn>(msg =>
+                _nonDistributedActions.Add(configurator => configurator.Handler<TIn>(msg =>
                 {
                     var output = hostedClassesFunc.Invoke(msg);
                     var context = _bus.MessageContext<TIn>();
@@ -184,11 +176,11 @@ namespace ShortBus.MassTransitHost
             //HACK: This is to fix a bug with MT 2.8
             if (canBeDistributed)
             {
-                distributedActions.Add(c => c.Handler(hostedClassesAction));
+                _distributedActions.Add(c => c.Handler(hostedClassesAction));
             }
             else
             {
-                nonDistributedActions.Add(configurator => configurator.Handler(hostedClassesAction));
+                _nonDistributedActions.Add(configurator => configurator.Handler(hostedClassesAction));
             }
 
         }
